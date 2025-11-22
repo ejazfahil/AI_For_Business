@@ -233,7 +233,7 @@ pip install -r requirements.txt
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/AI_For_Business.git
+git clone https://github.com/ejazfahil/AI_For_Business.git
 cd AI_For_Business
 ```
 
@@ -365,9 +365,9 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 👤 Author
 
-Your Name
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
+Fahil Ejaz
+- GitHub: [@ejazfahil](https://github.com/ejazfahil)
+- Email: ejazfahil@gmail.com
 
 ## 🙏 Acknowledgments
 
