@@ -1,380 +1,139 @@
-# AI For Business - Advanced Solutions
+# AI for Business — Churn, Energy Forecasting & Customer Segmentation
 
-A comprehensive collection of advanced AI and machine learning solutions for business applications, featuring state-of-the-art techniques for churn prediction, energy load forecasting, and customer segmentation.
+> Three applied machine-learning case studies on real business datasets: predicting bank-customer churn with a neural network, forecasting building energy load with regression/boosting, and segmenting wholesale customers with unsupervised learning.
 
-## 📋 Table of Contents
-
-- [Overview](#overview)
-- [Projects](#projects)
-  - [1. Advanced Churn Prediction](#1-advanced-churn-prediction)
-  - [2. Advanced Energy Load Forecasting](#2-advanced-energy-load-forecasting)
-  - [3. Advanced Customer Segmentation](#3-advanced-customer-segmentation)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Results](#results)
-- [Technologies Used](#technologies-used)
-- [Research & References](#research--references)
-- [Future Improvements](#future-improvements)
-- [Contributing](#contributing)
-
-## 🎯 Overview
-
-This repository contains three advanced AI/ML projects that demonstrate cutting-edge techniques for solving real-world business problems:
-
-1. **Churn Prediction**: Predicting customer churn using deep neural networks with advanced regularization techniques
-2. **Energy Load Forecasting**: Time series forecasting using gradient boosting with comprehensive feature engineering
-3. **Customer Segmentation**: Unsupervised learning for customer clustering using multiple algorithms
-
-Each project has been enhanced with the latest research and best practices in the field.
-
-## 📊 Projects
-
-### 1. Advanced Churn Prediction
-
-**Problem**: Predict whether a bank customer will leave the bank (churn) based on their demographic and account information.
-
-**Dataset**: `Churn_Modelling.csv` (10,000 customers, 14 features)
-
-**Advanced Techniques Implemented**:
-- **Deep Neural Network Architecture**:
-  - 4 hidden layers with decreasing units (128 → 64 → 32 → 16)
-  - Batch Normalization for training stability
-  - Dropout (30%) for regularization
-  - ReLU activation functions
-  
-- **Training Optimizations**:
-  - Adam optimizer with learning rate scheduling
-  - Early stopping to prevent overfitting
-  - ReduceLROnPlateau for adaptive learning rate
-  - Class weight balancing for imbalanced dataset
-  
-- **Evaluation Metrics**:
-  - Accuracy
-  - AUC-ROC Score
-  - Confusion Matrix
-  - Classification Report (Precision, Recall, F1-Score)
-
-**Key Features**:
-- Geography (one-hot encoded)
-- Credit Score
-- Age
-- Tenure
-- Balance
-- Number of Products
-- Has Credit Card
-- Is Active Member
-- Estimated Salary
-
-**Results**:
-- Test Accuracy: ~84-86%
-- AUC Score: ~0.85-0.87
-- Significant improvement over baseline models
-
-**Files**:
-- `ANN.ipynb`: Original notebook
-- `advanced_churn_prediction.py`: Enhanced implementation
-- `advanced_churn_model.h5`: Trained model
-
-**Usage**:
-```python
-python advanced_churn_prediction.py
-```
+![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB?logo=python&logoColor=white)
+![TensorFlow](https://img.shields.io/badge/TensorFlow%2FKeras-FF6F00?logo=tensorflow&logoColor=white)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?logo=scikitlearn&logoColor=white)
+![LightGBM](https://img.shields.io/badge/LightGBM-gradient%20boosting-9ACD32)
+![pandas](https://img.shields.io/badge/pandas-150458?logo=pandas&logoColor=white)
+![Jupyter](https://img.shields.io/badge/Jupyter-F37626?logo=jupyter&logoColor=white)
 
 ---
 
-### 2. Advanced Energy Load Forecasting
+## Overview
 
-**Problem**: Predict appliance energy consumption in a low-energy building based on temperature, humidity, and time features.
+This repository collects three business-oriented ML projects. Each ships as an **exploratory notebook with committed outputs** (the source of the verified numbers below) plus an **"advanced" Python script** that re-implements the task with deeper modeling (deep nets, LightGBM, multi-algorithm clustering). The notebook results are reproducible from this repo; the advanced scripts are provided as enhanced, runnable implementations whose artifacts are not pre-committed.
 
-**Dataset**: `energydata_complete.csv` (19,735 observations, 10-minute intervals)
-
-**Advanced Techniques Implemented**:
-- **LightGBM Model**:
-  - Gradient boosting with optimized hyperparameters
-  - Faster training and better performance than Random Forest
-  - Handles missing values and categorical features efficiently
-  
-- **Comprehensive Feature Engineering**:
-  - **Time Features**: Hour, day of week, month, quarter, year
-  - **Cyclical Encoding**: Sine/cosine transformations for hour and day
-  - **Lag Features**: Previous 1, 2, 3, 6, 12, 24 time steps
-  - **Rolling Statistics**: Mean, std, min, max over windows of 3, 6, 12, 24
-  - **Temperature & Humidity**: Multiple sensor readings
-  
-- **Time Series Cross-Validation**:
-  - 5-fold time series split
-  - Prevents data leakage
-  - More robust evaluation
-  
-- **Feature Importance Analysis**:
-  - SHAP values for interpretability
-  - Gain-based feature importance
-  - Visualization of top features
-
-**Key Findings**:
-- Lag features are most important predictors
-- Hour of day and day of week show strong patterns
-- Temperature and humidity have moderate impact
-- Rolling statistics capture trends effectively
-
-**Results**:
-- Average RMSE: ~50-60 Wh
-- Average R² Score: ~0.65-0.70
-- Significant improvement over baseline models
-
-**Files**:
-- `energy_load_forecasting.ipynb`: Original notebook
-- `advanced_energy_forecasting.py`: Enhanced implementation
-- `advanced_energy_model.txt`: Trained LightGBM model
-- `feature_importance_energy.png`: Feature importance visualization
-
-**Usage**:
-```python
-python advanced_energy_forecasting.py
-```
+| Project | Task | Datasets in repo |
+|---------|------|------------------|
+| Churn prediction | Binary classification | `Churn_Modelling.csv` (10,000 customers) |
+| Energy load forecasting | Regression / time series | `energydata_complete.csv` |
+| Customer segmentation | Clustering | `customers.csv` (wholesale, 440 customers) |
 
 ---
 
-### 3. Advanced Customer Segmentation
+## 1. Customer Churn Prediction
 
-**Problem**: Segment wholesale customers based on their annual spending on different product categories.
+**Goal:** predict whether a bank customer will exit, from 10 demographic/account features.
 
-**Dataset**: `Wholesale customers data.csv` (440 customers, 6 product categories)
+**Notebook (`ANN.ipynb`)** — a Keras Sequential network (two ReLU hidden layers, dropout, sigmoid output) trained on an 80/20 split with label + one-hot encoding and standardized features.
 
-**Advanced Techniques Implemented**:
-- **Multiple Clustering Algorithms**:
-  - **K-Means**: Centroid-based clustering with elbow method optimization
-  - **DBSCAN**: Density-based clustering for arbitrary-shaped clusters
-  - **Gaussian Mixture Model (GMM)**: Probabilistic clustering with BIC/AIC optimization
-  - **Hierarchical Clustering**: Agglomerative clustering for dendrogram analysis
-  
-- **Dimensionality Reduction**:
-  - PCA (Principal Component Analysis)
-  - UMAP (Uniform Manifold Approximation and Projection) - optional
-  
-- **Data Preprocessing**:
-  - Log transformation to handle skewness
-  - StandardScaler for normalization
-  
-- **Comprehensive Evaluation**:
-  - **Silhouette Score**: Measures cluster cohesion and separation
-  - **Davies-Bouldin Index**: Lower is better
-  - **Calinski-Harabasz Score**: Higher is better
-  
-- **Cluster Analysis**:
-  - Statistical summary of each cluster
-  - Visualization of clusters in 2D space
-  - Comparison across all algorithms
+**Verified result (from committed notebook outputs):** on the 2,000-record held-out test set, the confusion matrix is
 
-**Product Categories**:
-- Fresh products
-- Milk
-- Grocery
-- Frozen products
-- Detergents & Paper
-- Delicatessen
-
-**Results**:
-- Optimal number of clusters: 2-3 (varies by algorithm)
-- Best performing algorithm: GMM (Silhouette Score: ~0.40-0.45)
-- Clear separation between retail and horeca (hotel/restaurant/café) customers
-
-**Files**:
-- `customer_segments.ipynb`: Original notebook
-- `advanced_customer_segmentation.py`: Enhanced implementation
-- `clustering_comparison.png`: Visual comparison of all algorithms
-- `cluster_statistics.csv`: Statistical summary of clusters
-- `kmeans_optimization.png`: K-Means elbow and silhouette plots
-- `gmm_optimization.png`: GMM BIC/AIC optimization
-
-**Usage**:
-```python
-python advanced_customer_segmentation.py
+```
+                 Predicted
+                 Stay   Exit
+   Actual Stay  [1560    35]
+          Exit  [ 285   120]
 ```
 
----
+i.e. **1,680 / 2,000 correct → 84.0% test accuracy**, with high precision on churners (120 / 155 ≈ 77.4%) but limited recall (120 / 405 ≈ 29.6%) — the expected difficulty on an imbalanced churn target.
 
-## 🚀 Installation
+**Advanced script (`advanced_churn_prediction.py`)** deepens this with a 4-layer network (128→64→32→16) using BatchNormalization, 30% dropout, Adam + `ReduceLROnPlateau`, `EarlyStopping`, **balanced class weights**, and AUC reporting — directly targeting the recall gap above.
 
-### Prerequisites
-- Python 3.7+
-- pip
+## 2. Energy Load Forecasting
 
-### Required Libraries
+**Goal:** predict appliance energy consumption (Wh) in a low-energy building from temperature, humidity, and time features (10-minute intervals).
 
-```bash
-# Core libraries
-pip install numpy pandas matplotlib seaborn
+**Notebook (`energy_load_forecasting.ipynb`)** — EDA (consumption by hour/weekday/month, correlation heatmaps, log-transform of the target) followed by Linear Regression, SVR, and Random Forest, evaluated on a held-out test set.
 
-# Machine Learning
-pip install scikit-learn
+**Verified results (from committed notebook outputs):**
 
-# Deep Learning
-pip install tensorflow keras
+| Model | Test R² | Mean abs. error (°/log-Wh) |
+|-------|---------|----------------------------|
+| Linear Regression | 27.85% | 0.3104 |
+| SVR (RBF) | 27.50% | 0.3324 |
+| **Random Forest** | **64.85%** | **0.2092** |
+| Random Forest (+ engineered features) | **68.19%** | 0.1983 |
 
-# Gradient Boosting
-pip install lightgbm
+Random Forest is the clear winner; adding engineered features lifts test R² from ~0.65 to ~0.68. (5-fold CV likewise ranks RF highest: R² ≈ 0.55 ± 0.45.)
 
-# Optional: Advanced dimensionality reduction
-pip install umap-learn
+**Advanced script (`advanced_energy_forecasting.py`)** replaces RF with **LightGBM**, adds cyclical time encodings, lag features (1–24 steps), rolling statistics, time-series cross-validation, and SHAP-based feature importance.
 
-# Optional: Model interpretability
-pip install shap
+## 3. Customer Segmentation
 
-# Optional: Hyperparameter tuning
-pip install keras-tuner
+**Goal:** segment 440 wholesale customers by annual spend across six product categories (Fresh, Milk, Grocery, Frozen, Detergents/Paper, Delicatessen).
+
+**Notebook (`customer_segments.ipynb`)** — log-transform + scaling, outlier analysis, PCA (the first 2 components explain **~70.7%** of variance — and ~93.1% on the cleaned data), then clustering scored by silhouette coefficient.
+
+**Verified result (from committed notebook outputs):**
+
+| # Clusters | Silhouette score |
+|-----------|------------------|
+| **2** | **0.412** |
+| 3 | 0.374 |
+
+Two clusters give the best separation, corresponding to the classic **retail vs. HoReCa (hotel/restaurant/café)** customer split.
+
+**Advanced script (`advanced_customer_segmentation.py`)** compares **K-Means, DBSCAN, Gaussian Mixture Models, and hierarchical clustering**, with PCA/UMAP projection and silhouette / Davies-Bouldin / Calinski-Harabasz scoring.
+
+## Tech Stack & Tools
+
+| Area | Libraries |
+|------|-----------|
+| Data & numerics | **pandas**, **NumPy** |
+| Visualization | **Matplotlib**, **Seaborn** |
+| Classical ML | **scikit-learn** (LinearRegression, SVR, RandomForest, KMeans/DBSCAN/GMM, PCA, metrics) |
+| Deep learning | **TensorFlow / Keras** |
+| Gradient boosting | **LightGBM** |
+| Optional | **SHAP** (interpretability), **UMAP** (dimensionality reduction), **keras-tuner** (HPO) |
+
+## Project Structure
+
+```
+AI_For_Business/
+├── ANN.ipynb                              # churn — Keras DNN (verified 84% test accuracy)
+├── advanced_churn_prediction.py           # deeper net + class weights + AUC
+├── energy_load_forecasting.ipynb          # energy — LR/SVR/RF (verified R² up to 0.68)
+├── advanced_energy_forecasting.py         # LightGBM + lag/rolling/cyclical features
+├── customer_segments.ipynb                # segmentation — PCA + silhouette (0.412 @ k=2)
+├── advanced_customer_segmentation.py      # KMeans/DBSCAN/GMM/Hierarchical
+├── Churn_Modelling.csv                    # 10,000 bank customers
+├── energydata_complete.csv               # building energy time series
+├── customers.csv                          # 440 wholesale customers
+├── CCAI_Seasonal_Forecasting_with_Exercises.ipynb
+├── Census income classification with scikit-learn.ipynb
+├── requirements.txt
+└── README.md
 ```
 
-Or install all at once:
-```bash
-pip install -r requirements.txt
-```
-
-### Clone the Repository
+## Getting Started
 
 ```bash
 git clone https://github.com/ejazfahil/AI_For_Business.git
 cd AI_For_Business
-```
+pip install -r requirements.txt
 
-## 💻 Usage
+# reproduce the notebooks (outputs already committed)
+jupyter notebook ANN.ipynb
 
-### Running Individual Projects
-
-1. **Churn Prediction**:
-```bash
+# run the enhanced implementations
 python advanced_churn_prediction.py
-```
-
-2. **Energy Forecasting**:
-```bash
 python advanced_energy_forecasting.py
-```
-
-3. **Customer Segmentation**:
-```bash
 python advanced_customer_segmentation.py
 ```
 
-### Running Jupyter Notebooks
+## Future Work
 
-```bash
-jupyter notebook
-```
+- Churn: SMOTE / threshold tuning to lift churner **recall**; deploy as a REST API.
+- Energy: Temporal Fusion Transformer / N-BEATS and weather-forecast integration.
+- Segmentation: RFM analysis and customer-lifetime-value modeling on top of the clusters.
 
-Then open the respective `.ipynb` files.
+## Conclusion
 
-## 📈 Results
-
-### Churn Prediction
-- **Baseline Accuracy**: ~82%
-- **Advanced Model Accuracy**: ~85%
-- **AUC Score**: 0.86
-- **Key Improvement**: Better handling of class imbalance through class weights
-
-### Energy Load Forecasting
-- **Baseline R² Score**: 0.68 (Random Forest)
-- **Advanced Model R² Score**: 0.70 (LightGBM)
-- **RMSE Improvement**: ~10% reduction
-- **Key Improvement**: Comprehensive feature engineering with lag and rolling features
-
-### Customer Segmentation
-- **Best Algorithm**: Gaussian Mixture Model
-- **Silhouette Score**: 0.42
-- **Number of Clusters**: 2
-- **Key Insight**: Clear distinction between retail and horeca customers
-
-## 🛠️ Technologies Used
-
-### Programming Languages
-- Python 3.8+
-
-### Libraries & Frameworks
-- **Data Manipulation**: NumPy, Pandas
-- **Visualization**: Matplotlib, Seaborn
-- **Machine Learning**: Scikit-learn
-- **Deep Learning**: TensorFlow, Keras
-- **Gradient Boosting**: LightGBM
-- **Dimensionality Reduction**: UMAP (optional)
-- **Model Interpretability**: SHAP (optional)
-
-### Tools
-- Jupyter Notebook
-- Git
-
-## 📚 Research & References
-
-### Churn Prediction
-1. **Batch Normalization**: Ioffe, S., & Szegedy, C. (2015). Batch normalization: Accelerating deep network training by reducing internal covariate shift.
-2. **Dropout**: Srivastava, N., et al. (2014). Dropout: A simple way to prevent neural networks from overfitting.
-3. **Class Imbalance**: He, H., & Garcia, E. A. (2009). Learning from imbalanced data.
-
-### Energy Load Forecasting
-1. **LightGBM**: Ke, G., et al. (2017). LightGBM: A highly efficient gradient boosting decision tree.
-2. **Time Series Features**: Hyndman, R. J., & Athanasopoulos, G. (2018). Forecasting: principles and practice.
-3. **SHAP**: Lundberg, S. M., & Lee, S. I. (2017). A unified approach to interpreting model predictions.
-
-### Customer Segmentation
-1. **Clustering Comparison**: Xu, D., & Tian, Y. (2015). A comprehensive survey of clustering algorithms.
-2. **GMM**: Reynolds, D. A. (2009). Gaussian mixture models.
-3. **UMAP**: McInnes, L., et al. (2018). UMAP: Uniform manifold approximation and projection for dimension reduction.
-
-## 🔮 Future Improvements
-
-### Churn Prediction
-- [ ] Implement ensemble methods (stacking, boosting)
-- [ ] Add LSTM for sequential pattern detection
-- [ ] Implement SMOTE for better class balancing
-- [ ] Add feature importance analysis
-- [ ] Deploy as REST API
-
-### Energy Load Forecasting
-- [ ] Implement Transformer models (Temporal Fusion Transformer)
-- [ ] Add N-BEATS architecture
-- [ ] Implement Prophet for baseline comparison
-- [ ] Add weather forecast integration
-- [ ] Create real-time prediction dashboard
-
-### Customer Segmentation
-- [ ] Implement autoencoders for deep clustering
-- [ ] Add RFM (Recency, Frequency, Monetary) analysis
-- [ ] Implement customer lifetime value prediction
-- [ ] Add interactive visualization with Plotly
-- [ ] Create recommendation system based on clusters
-
-### General
-- [ ] Add automated testing
-- [ ] Create Docker containers
-- [ ] Add CI/CD pipeline
-- [ ] Create web interface with Streamlit
-- [ ] Add model monitoring and drift detection
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 👤 Author
-
-Fahil Ejaz
-- GitHub: [@ejazfahil](https://github.com/ejazfahil)
-- Email: ejazfahil@gmail.com
-
-## 🙏 Acknowledgments
-
-- Dataset sources: UCI Machine Learning Repository
-- Inspiration from various Kaggle competitions
-- Research papers and academic publications cited above
+A practical portfolio of business ML problems — each with a reproducible, output-backed baseline notebook and a more advanced re-implementation — spanning supervised classification, regression/time-series forecasting, and unsupervised segmentation.
 
 ---
 
-**Note**: This repository demonstrates advanced AI/ML techniques for educational and portfolio purposes. For production use, additional considerations such as data privacy, model monitoring, and scalability should be addressed.
+*Author: Fahil Ejaz · [@ejazfahil](https://github.com/ejazfahil)*
